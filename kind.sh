@@ -28,6 +28,9 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-
 
 sudo chmod +x /usr/local/bin/docker-compose
 
+sudo systemctl start docker
+sudo systemctl enable docker
+
 #kubectl install
 
 sudo apt-get update
