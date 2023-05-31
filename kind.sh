@@ -56,6 +56,8 @@ apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
 - role: worker
+- role: worker
+- role: worker
 EOF
   
 kind create cluster --config cluster.yml --image=kindest/node:v1.21.1
