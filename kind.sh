@@ -60,6 +60,6 @@ nodes:
 - role: worker
 EOF
   
-kind create cluster --config cluster.yml --image=kindest/node:v1.24.1
+kind create cluster --config cluster.yml --image=kindest/node:v1.23.1
   
 kubectl get nodes
