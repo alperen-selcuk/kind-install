@@ -4,51 +4,34 @@
 #docker install
 
 sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
 
-sudo apt install -y \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 sudo apt-get update
 
-sudo apt-get install -y docker-ce
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
-sudo usermod -aG docker $USER
-
-sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-
-sudo chmod +x /usr/local/bin/docker-compose
-
-sudo systemctl start docker
-sudo systemctl enable docker
+systemctl start docker
+systemctl enable docker
 
 #kubectl install
 
 sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo apt install apt-transport-https curl -y
 
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
 
-sudo apt-get update
+sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
 
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-
-sudo curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-
-sudo chmod 700 get_helm.sh
-
-sudo ./get_helm.sh
+sudo apt install kubeadm kubelet kubectl kubernetes-cni -y
 
 #kind binary install
 
