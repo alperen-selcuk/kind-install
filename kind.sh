@@ -47,9 +47,9 @@ sudo ./get_helm.sh
 
 #kind binary install
 
-curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64
 chmod +x ./kind
-mv ./kind /usr/bin/kind
+sudo mv ./kind /usr/local/bin/kind
 
 #create cluster 
 
@@ -63,6 +63,6 @@ nodes:
 - role: worker
 EOF
   
-kind create cluster --config cluster.yml --image=kindest/node:v1.23.1
+kind create cluster --config cluster.yml --image=kindest/node:v1.30.0
   
 kubectl get nodes
